@@ -68,6 +68,10 @@ class Page:
         self.bodyFrmSub1 = tk.Frame(self.bodyFrm, bg=BG_CLR)
         self.bodyFrmSub2 = tk.Frame(self.bodyFrm, bg=BG_CLR)
 
+        self.frmOnleft1 =  tk.Frame(self.bodyFrmSub2,bg=BG_CLR)
+        self.frmOnleft2 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
+        self.frmOnleft3 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
+
         self.browseLbl = tk.Label(self.bodyFrmSub1,
                                   text="Upload a Image ",
                                   bg=BG_CLR, fg=TEXT_CLR,
@@ -75,10 +79,20 @@ class Page:
 
         self.browseBtn = tk.Button(self.bodyFrmSub1,
                                    text='Browse a file',
+                                   bg=BG_CLR, fg=TEXT_CLR,
+                                   relief=tk.FLAT,
+                                   activebackground=HEADER_CLR,
+                                   activeforeground=TEXT_CLR,
+                                   font=('Script', 11, 'bold'),
                                    command=self.browseFile)
 
         self.previewBtn = tk.Button(self.bodyFrmSub1,
                                     text='Preview',
+                                    bg=BG_CLR, fg=TEXT_CLR,
+                                    relief=tk.FLAT,
+                                    activebackground=HEADER_CLR,
+                                    activeforeground=TEXT_CLR,
+                                    font=('Script', 11, 'bold'),
                                     command=self.previewImg,
                                     state=tk.DISABLED)
 
@@ -92,21 +106,62 @@ class Page:
         self.textbox.bind('<KeyRelease>', self.wordCount)
 
         self.massageLbl = tk.Label(self.bodyFrmSub1,
-                                   text="Enter Your Massage ",
+                                   text="Enter Your Massage Here ",
                                    bg=BG_CLR, fg=TEXT_CLR,
                                    font=('Script', 11, 'bold'))
 
         self.massageCount = tk.Label(self.bodyFrmSub1,
                                      text='count : 0/65536',
                                      bg=BG_CLR, fg=TEXT_CLR,
-                                     font=('Script', 11, 'bold'),
-                                     )
+                                     font=('Script', 11, 'bold'))
+
+        self.passwrdLbl = tk.Label(self.frmOnleft2,
+                                   text='Enter your Password',
+                                   bg=BG_CLR, fg=TEXT_CLR,
+                                   font=('Script', 11, 'bold'))
+
+        self.passwrdLbl2 = tk.Label(self.frmOnleft2,
+                                    text='Re-enter your Password',
+                                    bg=BG_CLR, fg=TEXT_CLR,
+                                    font=('Script', 11, 'bold'))
+
+        self.passwrd = tk.Entry(self.frmOnleft2,
+                                bg='#444', fg=TEXT_CLR,
+                                highlightthickness=0,
+                                font=('Script', 11),
+                                bd=0,
+                                width=32,
+                                show='*')
+
+        self.passwrd2 = tk.Entry(self.frmOnleft2,
+                                 bg='#444', fg=TEXT_CLR,
+                                 highlightthickness=0,
+                                 font=('Script', 11),
+                                 bd=0,
+                                 width=32,
+                                 show='*')
+
+        self.encryptBtn = tk.Button(self.frmOnleft3,
+                                    text='Encrypt',
+                                    bg='#47AA36',fg=TEXT_CLR,
+                                    relief=tk.FLAT,
+                                    highlightbackground='#47AA36',
+                                    activebackground=TEXT_CLR,
+                                    activeforeground='#47AA36',
+                                    font=('Script', 36, 'bold'),
+                                    state=tk.DISABLED)
+
         '''============================= Body Frame End ============================'''
 
     def encryptTab(self):
 
         self.bodyFrmSub1.grid(row=0, column=0, sticky=tk.NSEW)
         self.bodyFrmSub2.grid(row=0, column=1, sticky=tk.NSEW)
+
+        self.frmOnleft1.grid(row=0,column=0,sticky=tk.NSEW)
+        self.frmOnleft2.grid(row=1,column=0,sticky=tk.NSEW)
+        self.frmOnleft3.grid(row=2,column=0,sticky=tk.NSEW)
+
 
         self.bodyFrmSub1.rowconfigure(0, weight=1)
         self.bodyFrmSub1.rowconfigure(1, weight=1)
@@ -115,31 +170,46 @@ class Page:
         self.bodyFrmSub1.columnconfigure(1, weight=1)
         self.bodyFrmSub1.columnconfigure(2, weight=1)
 
-        self.browseLbl.grid(row=0, column=0, sticky=tk.W)
+        self.browseLbl.grid(row=0, column=0, sticky=tk.W, padx=5)
 
-        self.browseBtn.grid(row=0, column=1)
+        self.browseBtn.grid(row=0, column=1, padx=5)
 
-        self.previewBtn.grid(row=0, column=2, sticky=tk.E)
+        self.previewBtn.grid(row=0, column=2, sticky=tk.E, padx=5)
 
-        self.massageLbl.grid(row=1, column=0, sticky=tk.W)
+        self.massageLbl.grid(row=1, column=0, sticky=tk.W, padx=5)
 
-        self.massageCount.grid(row=1, column=2, sticky=tk.E)
+        self.massageCount.grid(row=1, column=2, sticky=tk.E, padx=5)
 
-        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.EW)
+        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.EW, padx=5)
 
         self.bodyFrmSub2.rowconfigure(0, weight=1)
+        self.bodyFrmSub2.rowconfigure(1, weight=1)
+        self.bodyFrmSub2.rowconfigure(2, weight=1)
         self.bodyFrmSub2.columnconfigure(0, weight=1)
 
-        tk.Label(self.bodyFrmSub2, text="hee").grid(row=0, column=0)
+        self.frmOnleft2.columnconfigure(0,weight=1)
+
+        self.frmOnleft3.rowconfigure(0,weight=1)
+        self.frmOnleft3.columnconfigure(0,weight=1)
+
+
+        self.passwrdLbl.grid(row=0, column=0, sticky=tk.W, padx=5)
+
+        self.passwrd.grid(row=1, column=0, sticky=tk.EW, padx=5)
+
+        self.passwrdLbl2.grid(row=2, column=0, sticky=tk.W, padx=5)
+        self.passwrd2.grid(row=3, column=0, sticky=tk.EW, padx=5)
+
+        self.encryptBtn.grid(row=0,column=0,sticky=tk.NSEW,padx=15,pady=15)
 
     def browseFile(self):
         imgFile = tk.filedialog.askopenfilename(initialdir='~/Documents/',
-                                                     title='Select a file',
-                                                     filetypes=(('All Files', '*.*'),
-                                                                ('PNG', '*.png'),
-                                                                ('JPG', '*.jp*'),
-                                                                ('BMP', '*.bmp'),
-                                                                ('TIFF', '*.tif*')))
+                                                title='Select a file',
+                                                filetypes=(('All Files', '*.*'),
+                                                           ('PNG', '*.png'),
+                                                           ('JPG', '*.jp*'),
+                                                           ('BMP', '*.bmp'),
+                                                           ('TIFF', '*.tif*')))
 
         if (len(imgFile) > 3):
             self.imgFile = imgFile
@@ -163,8 +233,8 @@ class Page:
             imgContainer.pack()
         except:
             imgPrevWin.destroy()
-            tk.messagebox.showerror("Can't Open File",'Your file is not opening... '
-                                    '\nPlease check filetype and try again...')
+            tk.messagebox.showerror("Can't Open File", 'Your file is not opening... '
+                                                       '\nPlease check filetype and try again...')
 
     def wordCount(self, event):
         self.massageCount.config(text='Count : ' + str(len(self.textbox.get('1.0', 'end-1c'))) + '/65536')
