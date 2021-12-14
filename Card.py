@@ -6,13 +6,11 @@ class Card:
         self.img = None
         self.width = 0
         self.height = 0
-        print('Card')
 
     def uploadCard(self, path):
         self.img = cv.imread(path, 1)
         self.width = self.img.shape[0]
         self.height = self.img.shape[1]
-        print(self.width, " x ", self.height)
 
     def displayCard(self):
         cv.imshow('hello', self.img)

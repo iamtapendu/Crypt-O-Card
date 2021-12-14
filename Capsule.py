@@ -211,3 +211,4 @@ if __name__ == '__main__':
     print(cap.getText())
 
     cap.card.displayCard()
+
