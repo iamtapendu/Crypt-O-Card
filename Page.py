@@ -68,9 +68,9 @@ class Page:
         self.bodyFrmSub1 = tk.Frame(self.bodyFrm, bg=BG_CLR)
         self.bodyFrmSub2 = tk.Frame(self.bodyFrm, bg=BG_CLR)
 
-        self.frmOnleft1 =  tk.Frame(self.bodyFrmSub2,bg=BG_CLR)
-        self.frmOnleft2 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
-        self.frmOnleft3 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
+        self.frmOnLeft1 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
+        self.frmOnLeft2 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
+        self.frmOnLeft3 = tk.Frame(self.bodyFrmSub2, bg=BG_CLR)
 
         self.browseLbl = tk.Label(self.bodyFrmSub1,
                                   text="Upload a Image ",
@@ -115,17 +115,17 @@ class Page:
                                      bg=BG_CLR, fg=TEXT_CLR,
                                      font=('Script', 11, 'bold'))
 
-        self.passwrdLbl = tk.Label(self.frmOnleft2,
+        self.passwrdLbl = tk.Label(self.frmOnLeft2,
                                    text='Enter your Password',
                                    bg=BG_CLR, fg=TEXT_CLR,
                                    font=('Script', 11, 'bold'))
 
-        self.passwrdLbl2 = tk.Label(self.frmOnleft2,
+        self.passwrdLbl2 = tk.Label(self.frmOnLeft2,
                                     text='Re-enter your Password',
                                     bg=BG_CLR, fg=TEXT_CLR,
                                     font=('Script', 11, 'bold'))
 
-        self.passwrd = tk.Entry(self.frmOnleft2,
+        self.passwrd = tk.Entry(self.frmOnLeft2,
                                 bg='#444', fg=TEXT_CLR,
                                 highlightthickness=0,
                                 font=('Script', 11),
@@ -133,7 +133,7 @@ class Page:
                                 width=32,
                                 show='*')
 
-        self.passwrd2 = tk.Entry(self.frmOnleft2,
+        self.passwrd2 = tk.Entry(self.frmOnLeft2,
                                  bg='#444', fg=TEXT_CLR,
                                  highlightthickness=0,
                                  font=('Script', 11),
@@ -141,9 +141,9 @@ class Page:
                                  width=32,
                                  show='*')
 
-        self.encryptBtn = tk.Button(self.frmOnleft3,
+        self.encryptBtn = tk.Button(self.frmOnLeft3,
                                     text='Encrypt',
-                                    bg='#47AA36',fg=TEXT_CLR,
+                                    bg='#47AA36', fg=TEXT_CLR,
                                     relief=tk.FLAT,
                                     highlightbackground='#47AA36',
                                     activebackground=TEXT_CLR,
@@ -158,10 +158,9 @@ class Page:
         self.bodyFrmSub1.grid(row=0, column=0, sticky=tk.NSEW)
         self.bodyFrmSub2.grid(row=0, column=1, sticky=tk.NSEW)
 
-        self.frmOnleft1.grid(row=0,column=0,sticky=tk.NSEW)
-        self.frmOnleft2.grid(row=1,column=0,sticky=tk.NSEW)
-        self.frmOnleft3.grid(row=2,column=0,sticky=tk.NSEW)
-
+        self.frmOnLeft1.grid(row=0, column=0, sticky=tk.NSEW)
+        self.frmOnLeft2.grid(row=1, column=0, sticky=tk.NSEW)
+        self.frmOnLeft3.grid(row=2, column=0, sticky=tk.NSEW)
 
         self.bodyFrmSub1.rowconfigure(0, weight=1)
         self.bodyFrmSub1.rowconfigure(1, weight=1)
@@ -187,11 +186,10 @@ class Page:
         self.bodyFrmSub2.rowconfigure(2, weight=1)
         self.bodyFrmSub2.columnconfigure(0, weight=1)
 
-        self.frmOnleft2.columnconfigure(0,weight=1)
+        self.frmOnLeft2.columnconfigure(0, weight=1)
 
-        self.frmOnleft3.rowconfigure(0,weight=1)
-        self.frmOnleft3.columnconfigure(0,weight=1)
-
+        self.frmOnLeft3.rowconfigure(0, weight=1)
+        self.frmOnLeft3.columnconfigure(0, weight=1)
 
         self.passwrdLbl.grid(row=0, column=0, sticky=tk.W, padx=5)
 
@@ -200,7 +198,7 @@ class Page:
         self.passwrdLbl2.grid(row=2, column=0, sticky=tk.W, padx=5)
         self.passwrd2.grid(row=3, column=0, sticky=tk.EW, padx=5)
 
-        self.encryptBtn.grid(row=0,column=0,sticky=tk.NSEW,padx=15,pady=15)
+        self.encryptBtn.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
     def browseFile(self):
         imgFile = tk.filedialog.askopenfilename(initialdir='~/Documents/',
