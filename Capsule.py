@@ -20,7 +20,7 @@ class Capsule:
         return self.text
 
     def setPassword(self, text):
-        if (len(text) > 4 and len(text) <= 16):
+        if (len(text) > 4 and len(text) <= 32):
             hashCode = hashlib.md5(text.encode())
             self.password = hashCode.hexdigest()
             return True
