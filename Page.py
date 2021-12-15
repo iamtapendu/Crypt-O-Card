@@ -6,7 +6,7 @@ import tkinter.filedialog
 
 BG_CLR = '#282828'
 TEXT_CLR = '#f8f8f8'
-HEADER_CLR = '#c880f8'
+HEADER_CLR = '#a050c0'
 BORDER_CLR = '#a8a8a8'
 
 
@@ -27,8 +27,8 @@ class Page:
                                 font=('Script', 11, 'bold'),
                                 tearoff=0, bd=0)
 
-        self.mainMenu.add_command(label='Encrypt')
-        self.mainMenu.add_command(label='Decrypt')
+        self.mainMenu.add_command(label='Encrypt',command=self.encryptTab)
+        self.mainMenu.add_command(label='Decrypt',command=self.decryptTab)
         self.mainMenu.add_command(label='About')
 
         self.window.config(menu=self.mainMenu)
@@ -152,27 +152,31 @@ class Page:
 
         self.encryptBtn = tk.Button(self.frmOnLeft3,
                                     text='Encrypt',
-                                    bg='#47AA36', fg=TEXT_CLR,
+                                    bg='#82D305', fg=TEXT_CLR,
                                     relief=tk.FLAT,
-                                    highlightbackground='#47AA36',
+                                    highlightbackground='#82D305',
                                     activebackground=TEXT_CLR,
-                                    activeforeground='#47AA36',
+                                    activeforeground='#82D305',
                                     font=('Script', 36, 'bold'),
                                     state=tk.DISABLED)
 
         self.decryptBtn = tk.Button(self.frmOnLeft3,
                                     text='Decrypt',
-                                    bg='#C91414', fg=TEXT_CLR,
+                                    bg='#de0000', fg=TEXT_CLR,
                                     relief=tk.FLAT,
-                                    highlightbackground='#C91414',
+                                    highlightbackground='#de0000',
                                     activebackground=TEXT_CLR,
-                                    activeforeground='#C91414',
+                                    activeforeground='#de0000',
                                     font=('Script', 36, 'bold'),
                                     state=tk.DISABLED)
 
         '''============================= Body Frame End ============================'''
 
     def encryptTab(self):
+
+        for widgets in self.window.winfo_children():
+            widgets.destroy()
+        self.__init__(self.window)
 
         self.bodyFrmSub1.grid(row=0, column=0, sticky=tk.NSEW)
         self.bodyFrmSub2.grid(row=0, column=1, sticky=tk.NSEW)
@@ -241,6 +245,11 @@ class Page:
             self.encryptBtn.config(state=tk.DISABLED)
 
     def decryptTab(self):
+
+        for widgets in self.window.winfo_children():
+            widgets.destroy()
+        self.__init__(self.window)
+
         self.bodyFrmSub1.grid(row=0, column=0, sticky=tk.NSEW)
         self.bodyFrmSub2.grid(row=0, column=1, sticky=tk.NSEW)
 
@@ -355,5 +364,9 @@ class Page:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    Page(root).decryptTab()
+
+    p =Page(root)
+    #p.encryptTab()
+    #p.decryptTab()
+
     root.mainloop()
