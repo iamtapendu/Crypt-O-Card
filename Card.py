@@ -20,7 +20,7 @@ class Card:
 
     def saveCard(self):
         now = dt.datetime.now()
-        cv.imwrite("Encrypted/Encrypt-O-Card_"+now.strftime('%d-%m-%Y_%X')+".jpg",self.img)
+        cv.imwrite("Encrypted/Encrypt-O-Card_"+now.strftime('%d-%m-%Y_%X')+".png",self.img)
 
 
 if __name__ == '__main__':

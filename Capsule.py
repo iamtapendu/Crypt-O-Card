@@ -1,3 +1,5 @@
+import numpy
+
 import Card
 import hashlib
 
@@ -56,7 +58,7 @@ class Capsule:
         return source % 2
 
     def writePassword(self):
-        if (len(self.password) == 0):
+        if (not len(self.password) > 4):
             return False
 
         x = SIGN_LEN + TEXT_LEN
@@ -92,7 +94,7 @@ class Capsule:
         return False
 
     def writeTextProperties(self):
-        if (len(self.text) == 0 and self.card.img == None):
+        if not ((len(self.text) > 3) and isinstance(self.card.img,numpy.ndarray)):
             return False
 
         x = 0
@@ -177,9 +179,9 @@ class Capsule:
 
 if __name__ == '__main__':
     cap = Capsule()
-    print('A = ', cap.charToBin('A'))
-    print('1000001 = ', cap.binToChar('1000001'))
-    print(cap.getFromLSB(254))
+    # print('A = ', cap.charToBin('A'))
+    # print('1000001 = ', cap.binToChar('1000001'))
+    # print(cap.getFromLSB(254))
 
     # for i in cap.charToBin('A'):
     #    print(cap.putAtLSB(254,int(i)))
@@ -195,20 +197,21 @@ if __name__ == '__main__':
 
     cap.setText(text)
 
-    cap.writeTextProperties()
-    print(cap.readTextProperties())
+    # cap.writeTextProperties()
+    #print(cap.readTextProperties())
 
     cap.setPassword('T@pendu2001')
-    cap.writePassword()
-    cap.readPassword()
-    print(cap.getPassword())
+    # cap.writePassword()
+    # cap.readPassword()
+    # print(cap.getPassword())
 
-    a = hashlib.md5('T@pendu2001'.encode())
-    print(a.hexdigest())
-
+    # a = hashlib.md5('T@pendu2001'.encode())
+    # print(a.hexdigest())
+    #
     cap.combineCardWithText()
     cap.separateCardFromText('T@pendu2001')
     print(cap.getText())
+    print(cap.checkValidity())
 
     cap.card.displayCard()
 

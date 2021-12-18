@@ -1,8 +1,10 @@
+import importlib.metadata
 import tkinter as tk
 import PIL.Image
 import PIL.ImageTk
 import tkinter.messagebox
 import tkinter.filedialog
+import Capsule as cap
 
 BG_CLR = '#282828'
 TEXT_CLR = '#f8f8f8'
@@ -14,6 +16,7 @@ class Page:
     def __init__(self, window):
         self.window = window
         self.imgFile = ''
+        self.cap = cap.Capsule()
         self.window.title('Crypt-O-Card')
         self.window.geometry('1000x600')
         self.window.resizable(0, 0)
@@ -152,13 +155,14 @@ class Page:
 
         self.encryptBtn = tk.Button(self.frmOnLeft3,
                                     text='Encrypt',
-                                    bg='#82D305', fg=TEXT_CLR,
+                                    bg='#008000', fg=TEXT_CLR,
                                     relief=tk.FLAT,
-                                    highlightbackground='#82D305',
+                                    highlightbackground='#008000',
                                     activebackground=TEXT_CLR,
-                                    activeforeground='#82D305',
+                                    activeforeground='#008000',
                                     font=('Script', 36, 'bold'),
-                                    state=tk.DISABLED)
+                                    state=tk.DISABLED,
+                                    command=self.encryptImg)
 
         self.decryptBtn = tk.Button(self.frmOnLeft3,
                                     text='Decrypt',
@@ -168,7 +172,8 @@ class Page:
                                     activebackground=TEXT_CLR,
                                     activeforeground='#de0000',
                                     font=('Script', 36, 'bold'),
-                                    state=tk.DISABLED)
+                                    state=tk.DISABLED,
+                                    command=self.decryptImg)
 
         '''============================= Body Frame End ============================'''
 
@@ -236,13 +241,25 @@ class Page:
                 if x == tail:
                     imgFlag = True
                     break
-            if (self.passwrd.get() == self.passwrd2.get()):
+            if (self.passwrd.get() == self.passwrd2.get() and len(self.passwrd.get())>4):
                 passFlag = True
 
         if (imgFlag and passFlag):
             self.encryptBtn.config(state=tk.NORMAL)
         else:
             self.encryptBtn.config(state=tk.DISABLED)
+
+    def encryptImg(self):
+        try:
+            self.cap.setText(self.textbox.get('1.0','end-1c'))
+            self.cap.setPassword(self.passwrd.get())
+            self.cap.combineCardWithText()
+            self.cap.card.saveCard()
+            tk.messagebox.showinfo('Info','Your Encrypted File has been saved.\n'
+                                          'Please find your file in encrypted folder.\n'
+                                          'Thank You for using Cryp-O-Card')
+        except:
+            tk.messagebox.showerror("Error",'Some error occur please try again later')
 
     def decryptTab(self):
 
@@ -275,7 +292,7 @@ class Page:
 
         self.validateBtn.grid(row=1, column=2, padx=5, sticky=tk.E)
 
-        self.textbox.config(state=tk.DISABLED)
+        # self.textbox.config(state=tk.DISABLED)
         self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.NSEW, padx=5, pady=(5,15))
 
         self.bodyFrmSub2.rowconfigure(0, weight=1)
@@ -293,26 +310,47 @@ class Page:
 
         self.decryptBtn.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
+    def decryptImg(self):
+        if(not self.cap.authenticate(self.passwrd.get())):
+            tk.messagebox.showerror('Stop','Password is incorrect')
+            return
+        try:
+            self.cap.separateCardFromText(self.passwrd.get())
+            self.textbox.insert(tk.END,self.cap.text)
+            print(self.cap.text)
+        except:
+            tk.messagebox.showerror("Error",'Some error occur please try again later')
+
+
     def validateImgFile(self):
-        self.decryptBtn.config(state=tk.NORMAL)
-        pass
+        if(self.cap.checkValidity()):
+            self.decryptBtn.config(state=tk.NORMAL)
+        else:
+            tk.messagebox.showerror('Error','Your selected file is not encrypted')
+
 
     def browseFile(self):
-        imgFile = tk.filedialog.askopenfilename(initialdir='~/Documents/',
-                                                title='Select a file',
-                                                filetypes=(('All Files', '*.*'),
-                                                           ('PNG', '*.png'),
-                                                           ('JPG', '*.jp*'),
-                                                           ('BMP', '*.bmp'),
-                                                           ('TIFF', '*.tif*')))
+        try:
+            imgFile = tk.filedialog.askopenfilename(initialdir='~/Documents/',
+                                                    title='Select a file',
+                                                    filetypes=(('All Files', '*.*'),
+                                                               ('PNG', '*.png'),
+                                                               ('JPG', '*.jp*'),
+                                                               ('BMP', '*.bmp'),
+                                                               ('TIFF', '*.tif*')))
 
-        if (len(imgFile) > 3):
-            self.imgFile = imgFile
-            imgFile = imgFile.split('/')[-1]
-            self.browseLbl.config(text='Uploaded File : ' + imgFile)
-            self.previewBtn.config(state=tk.NORMAL)
-            self.validateBtn.config(state=tk.NORMAL)
-        self.enableEncrypt()
+            if (len(imgFile) > 3):
+                self.imgFile = imgFile
+                imgFile = imgFile.split('/')[-1]
+                if(len(imgFile)>10):
+                    imgFile = imgFile[:10]+'...'
+                self.browseLbl.config(text='Uploaded File : ' + imgFile)
+                self.cap.card.uploadCard(self.imgFile)
+                self.previewBtn.config(state=tk.NORMAL)
+                self.validateBtn.config(state=tk.NORMAL)
+            self.enableEncrypt()
+        except:
+            tk.messagebox.showerror('Error','Please Check Your file type...')
 
     def previewImg(self):
         global imgPrevWin
