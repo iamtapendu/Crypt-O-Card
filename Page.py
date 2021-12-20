@@ -1,3 +1,20 @@
+#     Crypt-O-Card encrypt and decrypt text message into an image file
+#     Copyright (C) 2021 Tapendu Karmakar
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 import tkinter as tk
 import PIL.Image
 import PIL.ImageTk
@@ -29,9 +46,9 @@ class Page:
                                 font=('Script', 11, 'bold'),
                                 tearoff=0, bd=0)
 
-        self.mainMenu.add_command(label='Encrypt',command=self.encryptTab)
-        self.mainMenu.add_command(label='Decrypt',command=self.decryptTab)
-        self.mainMenu.add_command(label='About')
+        self.mainMenu.add_command(label='Encrypt', command=self.encryptTab)
+        self.mainMenu.add_command(label='Decrypt', command=self.decryptTab)
+        self.mainMenu.add_command(label='About', command=self.aboutTab)
 
         self.window.config(menu=self.mainMenu)
 
@@ -174,6 +191,33 @@ class Page:
                                     state=tk.DISABLED,
                                     command=self.decryptImg)
 
+        self.licence = tk.Label(self.bodyFrmSub1,
+                                text='Crypt-O-Card encrypt and decrypt text message into an image file.\n'
+                                'Copyright (C) 2021 Tapendu Karmakar\n\n'
+                                'This program is free software: you can redistribute it and/or modify it\n'
+                                'under the terms of the GNU General Public License as published by the\n'
+                                'Free Software Foundation, either version 3 of the License, or (at your option)\n'
+                                'any later version.\n\n'
+                            
+                                'This program is distributed in the hope that it will be useful,\n'
+                                'but WITHOUT ANY WARRANTY; without even the implied warranty of\n'
+                                'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n'
+                                'See the GNU General Public License for more details.\n'
+                            
+                                'You should have received a copy of the GNU General Public License\n'
+                                'along with this program.  If not, see <https://www.gnu.org/licenses/>.',
+                                bg=BG_CLR, fg=TEXT_CLR,
+                                font=('Script', 11, 'bold'),
+                                justify=tk.LEFT)
+
+        self.about = tk.Label(self.bodyFrmSub2,
+                              text="Crypt-O-Card\n"
+                                   "Version : v1.0\n"
+                                   "Author : Tapendu Karmakar",
+                              bg=BG_CLR, fg=TEXT_CLR,
+                              font=('Script', 11, 'bold'),
+                              justify=tk.LEFT)
+
         '''============================= Body Frame End ============================'''
 
     def encryptTab(self):
@@ -207,7 +251,7 @@ class Page:
         self.massageCount.grid(row=1, column=2, sticky=tk.SE, padx=5)
 
         self.textbox.bind('<KeyRelease>', self.wordCount)
-        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.NSEW, padx=5, pady=(5,15))
+        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.NSEW, padx=5, pady=(5, 15))
 
         self.bodyFrmSub2.rowconfigure(0, weight=1)
         self.bodyFrmSub2.rowconfigure(1, weight=1)
@@ -240,7 +284,7 @@ class Page:
                 if x == tail:
                     imgFlag = True
                     break
-            if (self.passwrd.get() == self.passwrd2.get() and len(self.passwrd.get())>4):
+            if (self.passwrd.get() == self.passwrd2.get() and len(self.passwrd.get()) > 4):
                 passFlag = True
 
         if (imgFlag and passFlag):
@@ -250,18 +294,18 @@ class Page:
 
     def encryptImg(self):
         try:
-            self.cap.setText(self.textbox.get('1.0','end-1c'))
+            self.cap.setText(self.textbox.get('1.0', 'end-1c'))
             self.cap.setPassword(self.passwrd.get())
-            if(len(self.cap.text)*8 > (self.cap.card.width-1)*self.cap.card.height):
+            if (len(self.cap.text) * 8 > (self.cap.card.width - 1) * self.cap.card.height):
                 tk.messagebox.showerror(message='Your text is exceeding image size. choose larger image or reduce text')
                 return
             self.cap.combineCardWithText()
             self.cap.card.saveCard()
-            tk.messagebox.showinfo('Info','Your Encrypted File has been saved.\n'
-                                          'Please find your file in encrypted folder.\n'
-                                          'Thank You for using Crypt-O-Card')
+            tk.messagebox.showinfo('Info', 'Your Encrypted File has been saved.\n'
+                                           'Please find your file in encrypted folder.\n'
+                                           'Thank You for using Crypt-O-Card')
         except Exception as e:
-            tk.messagebox.showerror("Error",'Some error occur please try again later\n'+str(e))
+            tk.messagebox.showerror("Error", 'Some error occur please try again later\n' + str(e))
 
     def decryptTab(self):
 
@@ -295,7 +339,7 @@ class Page:
         self.validateBtn.grid(row=1, column=2, padx=5, sticky=tk.E)
 
         # self.textbox.config(state=tk.DISABLED)
-        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.NSEW, padx=5, pady=(5,15))
+        self.textbox.grid(row=2, column=0, columnspan=3, sticky=tk.NSEW, padx=5, pady=(5, 15))
 
         self.bodyFrmSub2.rowconfigure(0, weight=1)
         self.bodyFrmSub2.rowconfigure(1, weight=1)
@@ -313,25 +357,45 @@ class Page:
         self.decryptBtn.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
     def decryptImg(self):
-        if(not self.cap.authenticate(self.passwrd.get())):
-            tk.messagebox.showerror('Stop','Password is incorrect')
+        if (not self.cap.authenticate(self.passwrd.get())):
+            tk.messagebox.showerror('Stop', 'Password is incorrect')
             return
         try:
             self.cap.separateCardFromText(self.passwrd.get())
-            self.textbox.delete(1.0,tk.END)
-            self.textbox.insert(tk.END,self.cap.text)
-            tk.messagebox.showinfo('Decryption Successful','Card is Successfully Decrypted')
+            self.textbox.delete(1.0, tk.END)
+            self.textbox.insert(tk.END, self.cap.text)
+            tk.messagebox.showinfo('Decryption Successful', 'Card is Successfully Decrypted')
         except Exception as e:
-            tk.messagebox.showerror("Error",'Some error occur please try again later'+str(e))
+            tk.messagebox.showerror("Error", 'Some error occur please try again later' + str(e))
 
+    def aboutTab(self):
+
+        for widgets in self.window.winfo_children():
+            widgets.destroy()
+        self.__init__(self.window)
+
+        self.bodyFrmSub1.grid(row=0, column=0, sticky=tk.NSEW)
+        self.bodyFrmSub2.grid(row=0, column=1, sticky=tk.NSEW)
+
+        self.bodyFrmSub1.rowconfigure(0, weight=1)
+        self.bodyFrmSub1.rowconfigure(1, weight=9)
+        self.bodyFrmSub1.columnconfigure(0, weight=1)
+
+        self.bodyFrmSub2.rowconfigure(0, weight=1)
+        self.bodyFrmSub2.columnconfigure(0, weight=1)
+
+        self.browseLbl.config(text='LICENCE')
+        self.browseLbl.grid(row=0,column=0)
+
+        self.licence.grid(row=1, column=0, padx=5, pady=5,sticky=tk.N)
+        self.about.grid(row=0, column=0, padx=5, pady=5,sticky=tk.N)
 
     def validateImgFile(self):
-        if(self.cap.checkValidity()):
+        if (self.cap.checkValidity()):
             self.decryptBtn.config(state=tk.NORMAL)
-            tk.messagebox.showinfo('Valid','Your selected file can be decrypted')
+            tk.messagebox.showinfo('Valid', 'Your selected file can be decrypted')
         else:
-            tk.messagebox.showerror('Error','Your selected file is not encrypted')
-
+            tk.messagebox.showerror('Error', 'Your selected file is not encrypted')
 
     def browseFile(self):
         try:
@@ -346,15 +410,15 @@ class Page:
             if (len(imgFile) > 3):
                 self.imgFile = imgFile
                 imgFile = imgFile.split('/')[-1]
-                if(len(imgFile)>10):
-                    imgFile = imgFile[:10]+'...'
+                if (len(imgFile) > 10):
+                    imgFile = imgFile[:10] + '...'
                 self.browseLbl.config(text='Uploaded File : ' + imgFile)
                 self.cap.card.uploadCard(self.imgFile)
                 self.previewBtn.config(state=tk.NORMAL)
                 self.validateBtn.config(state=tk.NORMAL)
             self.enableEncrypt()
         except:
-            tk.messagebox.showerror('Error','Please Check Your file type...')
+            tk.messagebox.showerror('Error', 'Please Check Your file type...')
 
     def previewImg(self):
         global imgPrevWin
@@ -407,8 +471,8 @@ class Page:
 if __name__ == "__main__":
     root = tk.Tk()
 
-    p =Page(root)
-    #p.encryptTab()
-    #p.decryptTab()
+    p = Page(root)
+    # p.encryptTab()
+    # p.decryptTab()
 
     root.mainloop()

@@ -1,11 +1,25 @@
-import numpy
+#     Crypt-O-Card encrypt and decrypt text message into an image file
+#     Copyright (C) 2021 Tapendu Karmakar
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import numpy
 import Card
 import hashlib
 
 SIGN = 'Crypt-O-Card'
 SIGN_LEN = len(SIGN) * 8
-CHANNEL = 0
 TEXT_LEN = 16
 
 
@@ -64,7 +78,7 @@ class Capsule:
         x = SIGN_LEN + TEXT_LEN
         for letter in self.password:
             for bit in self.charToBin(letter):
-                self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
+                self.card.img[0, x, self.card.channel] = self.putAtLSB(self.card.img[0, x, self.card.channel], int(bit))
                 x = (x + 1) % self.card.width
 
         return True
@@ -78,7 +92,7 @@ class Capsule:
         for letter in range(0, 32):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[0, x, self.card.channel]))
                 x = (x + 1) % self.card.width
             self.password += self.binToChar(bin)
 
@@ -94,14 +108,14 @@ class Capsule:
         return False
 
     def writeTextProperties(self):
-        if not ((len(self.text) > 3) and isinstance(self.card.img,numpy.ndarray)):
+        if not ((len(self.text) > 3) and isinstance(self.card.img, numpy.ndarray)):
             return False
 
         x = 0
 
         for letter in SIGN:
             for bit in self.charToBin(letter):
-                self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
+                self.card.img[0, x, self.card.channel] = self.putAtLSB(self.card.img[0, x, self.card.channel], int(bit))
                 x = (x + 1) % self.card.width
 
         temp = len(self.text)
@@ -114,7 +128,7 @@ class Capsule:
                 bin += '0'
 
         for bit in bin:
-            self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
+            self.card.img[0, x, self.card.channel] = self.putAtLSB(self.card.img[0, x, self.card.channel], int(bit))
             x = (x + 1) % self.card.width
 
         if (not self.writePassword()):
@@ -128,7 +142,7 @@ class Capsule:
         for letter in range(0, len(SIGN)):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[0, x, self.card.channel]))
                 x = (x + 1) % self.card.width
             tmpSign += self.binToChar(bin)
 
@@ -141,19 +155,22 @@ class Capsule:
             return 0
         bin = ''
         for x in range(SIGN_LEN, SIGN_LEN + TEXT_LEN):
-            bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
+            bin += str(self.getFromLSB(self.card.img[0, x, self.card.channel]))
         return int(bin, 2)
 
     def combineCardWithText(self):
-        if(not self.writeTextProperties()):
+        if (not self.writeTextProperties()):
             return False
 
         x, y = 0, 1
         for letter in self.text:
             for bit in self.charToBin(letter):
-                self.card.img[y, x, CHANNEL] = self.putAtLSB(self.card.img[y, x, CHANNEL], int(bit))
+                self.card.img[y, x, self.card.channel] = self.putAtLSB(self.card.img[y, x, self.card.channel], int(bit))
                 y = y + (x + 1) // self.card.width
                 x = (x + 1) % self.card.width
+                if (y == self.card.height and self.card.channel != 3):
+                    x = y = 0
+                    self.card.channel += 1
 
         return True
 
@@ -169,7 +186,7 @@ class Capsule:
         for letter in range(length):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[y, x, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[y, x, self.card.channel]))
                 y = y + (x + 1) // self.card.width
                 x = (x + 1) % self.card.width
             self.text += self.binToChar(bin)
@@ -198,7 +215,7 @@ if __name__ == '__main__':
     cap.setText(text)
 
     # cap.writeTextProperties()
-    #print(cap.readTextProperties())
+    # print(cap.readTextProperties())
 
     cap.setPassword('T@pendu2001')
     # cap.writePassword()
@@ -214,4 +231,3 @@ if __name__ == '__main__':
     print(cap.checkValidity())
 
     cap.card.displayCard()
-
