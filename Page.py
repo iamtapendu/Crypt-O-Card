@@ -193,19 +193,19 @@ class Page:
 
         self.licence = tk.Label(self.bodyFrmSub1,
                                 text='Crypt-O-Card encrypt and decrypt text message into an image file.\n'
-                                'Copyright (C) 2021 Tapendu Karmakar\n\n'
-                                'This program is free software: you can redistribute it and/or modify it\n'
-                                'under the terms of the GNU General Public License as published by the\n'
-                                'Free Software Foundation, either version 3 of the License, or (at your option)\n'
-                                'any later version.\n\n'
-                            
-                                'This program is distributed in the hope that it will be useful,\n'
-                                'but WITHOUT ANY WARRANTY; without even the implied warranty of\n'
-                                'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n'
-                                'See the GNU General Public License for more details.\n'
-                            
-                                'You should have received a copy of the GNU General Public License\n'
-                                'along with this program.  If not, see <https://www.gnu.org/licenses/>.',
+                                     'Copyright (C) 2021 Tapendu Karmakar\n\n'
+                                     'This program is free software: you can redistribute it and/or modify it\n'
+                                     'under the terms of the GNU General Public License as published by the\n'
+                                     'Free Software Foundation, either version 3 of the License, or (at your option)\n'
+                                     'any later version.\n\n'
+
+                                     'This program is distributed in the hope that it will be useful,\n'
+                                     'but WITHOUT ANY WARRANTY; without even the implied warranty of\n'
+                                     'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n'
+                                     'See the GNU General Public License for more details.\n'
+
+                                     'You should have received a copy of the GNU General Public License\n'
+                                     'along with this program.  If not, see <https://www.gnu.org/licenses/>.',
                                 bg=BG_CLR, fg=TEXT_CLR,
                                 font=('Script', 11, 'bold'),
                                 justify=tk.LEFT)
@@ -275,7 +275,6 @@ class Page:
         self.encryptBtn.grid(row=0, column=0, sticky=tk.NSEW, padx=15, pady=15)
 
     def enableEncrypt(self):
-        global tail, imgFlag, passFlag
         passFlag = imgFlag = False
         extnList = ['png', 'jpeg', 'jpg', 'bmp', 'tiff', 'tif']
         if (len(self.imgFile) > 3 and len(self.textbox.get('1.0', 'end-1c')) > 2):
@@ -385,10 +384,10 @@ class Page:
         self.bodyFrmSub2.columnconfigure(0, weight=1)
 
         self.browseLbl.config(text='LICENCE')
-        self.browseLbl.grid(row=0,column=0)
+        self.browseLbl.grid(row=0, column=0)
 
-        self.licence.grid(row=1, column=0, padx=5, pady=5,sticky=tk.N)
-        self.about.grid(row=0, column=0, padx=5, pady=5,sticky=tk.N)
+        self.licence.grid(row=1, column=0, padx=5, pady=5, sticky=tk.N)
+        self.about.grid(row=0, column=0, padx=5, pady=5, sticky=tk.N)
 
     def validateImgFile(self):
         if (self.cap.checkValidity()):
@@ -445,13 +444,13 @@ class Page:
 
     def passStrength(self, event):
         length = len(self.passwrd.get())
-        if (length > 16):
+        if length > 16:
             grade = 'Stronger'
-        elif (length > 10):
+        elif length > 10:
             grade = 'Strong'
-        elif (length > 5):
+        elif length > 5:
             grade = 'Average'
-        elif (length > 0):
+        elif length > 0:
             grade = 'Weak'
         else:
             grade = ''
@@ -460,7 +459,7 @@ class Page:
         self.enableEncrypt()
 
     def confirmPass(self, event):
-        if (self.passwrd.get() == self.passwrd2.get()):
+        if self.passwrd.get() == self.passwrd2.get():
             self.passwrdLbl2.config(text='Re-enter your Password : Valid')
             self.enableEncrypt()
         else:
