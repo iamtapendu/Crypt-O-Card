@@ -295,7 +295,7 @@ class Page:
         try:
             self.cap.setText(self.textbox.get('1.0', 'end-1c'))
             self.cap.setPassword(self.passwrd.get())
-            if (len(self.cap.text) * 8 > (self.cap.card.width - 1) * self.cap.card.height):
+            if (len(self.cap.text) * 8 > (self.cap.card.height - 1) * self.cap.card.width*3):
                 tk.messagebox.showerror(message='Your text is exceeding image size. choose larger image or reduce text')
                 return
             self.cap.combineCardWithText()
