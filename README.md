@@ -1,5 +1,5 @@
 # **Crypt-O-Card**
-### Hiding a Message a within a picture
+## Hiding a Message a Within a Picture
 
 ### This Application can encrypt/decrypt a text into image file.
 * You can store secret information into a picture with password.
