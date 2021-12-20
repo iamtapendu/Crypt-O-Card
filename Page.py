@@ -1,4 +1,3 @@
-import importlib.metadata
 import tkinter as tk
 import PIL.Image
 import PIL.ImageTk
@@ -253,13 +252,16 @@ class Page:
         try:
             self.cap.setText(self.textbox.get('1.0','end-1c'))
             self.cap.setPassword(self.passwrd.get())
+            if(len(self.cap.text)*8 > (self.cap.card.width-1)*self.cap.card.height):
+                tk.messagebox.showerror(message='Your text is exceeding image size. choose larger image or reduce text')
+                return
             self.cap.combineCardWithText()
             self.cap.card.saveCard()
             tk.messagebox.showinfo('Info','Your Encrypted File has been saved.\n'
                                           'Please find your file in encrypted folder.\n'
-                                          'Thank You for using Cryp-O-Card')
-        except:
-            tk.messagebox.showerror("Error",'Some error occur please try again later')
+                                          'Thank You for using Crypt-O-Card')
+        except Exception as e:
+            tk.messagebox.showerror("Error",'Some error occur please try again later\n'+str(e))
 
     def decryptTab(self):
 
@@ -316,22 +318,24 @@ class Page:
             return
         try:
             self.cap.separateCardFromText(self.passwrd.get())
+            self.textbox.delete(1.0,tk.END)
             self.textbox.insert(tk.END,self.cap.text)
-            print(self.cap.text)
-        except:
-            tk.messagebox.showerror("Error",'Some error occur please try again later')
+            tk.messagebox.showinfo('Decryption Successful','Card is Successfully Decrypted')
+        except Exception as e:
+            tk.messagebox.showerror("Error",'Some error occur please try again later'+str(e))
 
 
     def validateImgFile(self):
         if(self.cap.checkValidity()):
             self.decryptBtn.config(state=tk.NORMAL)
+            tk.messagebox.showinfo('Valid','Your selected file can be decrypted')
         else:
             tk.messagebox.showerror('Error','Your selected file is not encrypted')
 
 
     def browseFile(self):
         try:
-            imgFile = tk.filedialog.askopenfilename(initialdir='~/Documents/',
+            imgFile = tk.filedialog.askopenfilename(initialdir='',
                                                     title='Select a file',
                                                     filetypes=(('All Files', '*.*'),
                                                                ('PNG', '*.png'),

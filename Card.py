@@ -8,15 +8,11 @@ class Card:
         self.height = 0
 
     def uploadCard(self, path):
-        self.img = cv.imread(path, 1)
-        self.width = self.img.shape[0]
-        self.height = self.img.shape[1]
-
-    def displayCard(self):
-        cv.imshow('hello', self.img)
-        key = cv.waitKey(0)
-        if (key == ord('q')):
-            cv.destroyAllWindows()
+        img = cv.imread(path, 1)
+        if(img.shape[1]>=370):
+            self.width = img.shape[1]
+            self.height = img.shape[0]
+            self.img = img
 
     def saveCard(self):
         now = dt.datetime.now()

@@ -64,7 +64,7 @@ class Capsule:
         x = SIGN_LEN + TEXT_LEN
         for letter in self.password:
             for bit in self.charToBin(letter):
-                self.card.img[x, 0, CHANNEL] = self.putAtLSB(self.card.img[x, 0, CHANNEL], int(bit))
+                self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
                 x = (x + 1) % self.card.width
 
         return True
@@ -78,7 +78,7 @@ class Capsule:
         for letter in range(0, 32):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[x, 0, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
                 x = (x + 1) % self.card.width
             self.password += self.binToChar(bin)
 
@@ -101,7 +101,7 @@ class Capsule:
 
         for letter in SIGN:
             for bit in self.charToBin(letter):
-                self.card.img[x, 0, CHANNEL] = self.putAtLSB(self.card.img[x, 0, CHANNEL], int(bit))
+                self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
                 x = (x + 1) % self.card.width
 
         temp = len(self.text)
@@ -114,7 +114,7 @@ class Capsule:
                 bin += '0'
 
         for bit in bin:
-            self.card.img[x, 0, CHANNEL] = self.putAtLSB(self.card.img[x, 0, CHANNEL], int(bit))
+            self.card.img[0, x, CHANNEL] = self.putAtLSB(self.card.img[0, x, CHANNEL], int(bit))
             x = (x + 1) % self.card.width
 
         if (not self.writePassword()):
@@ -128,7 +128,7 @@ class Capsule:
         for letter in range(0, len(SIGN)):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[x, 0, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
                 x = (x + 1) % self.card.width
             tmpSign += self.binToChar(bin)
 
@@ -141,7 +141,7 @@ class Capsule:
             return 0
         bin = ''
         for x in range(SIGN_LEN, SIGN_LEN + TEXT_LEN):
-            bin += str(self.getFromLSB(self.card.img[x, 0, CHANNEL]))
+            bin += str(self.getFromLSB(self.card.img[0, x, CHANNEL]))
         return int(bin, 2)
 
     def combineCardWithText(self):
@@ -151,7 +151,7 @@ class Capsule:
         x, y = 0, 1
         for letter in self.text:
             for bit in self.charToBin(letter):
-                self.card.img[x, y, CHANNEL] = self.putAtLSB(self.card.img[x, y, CHANNEL], int(bit))
+                self.card.img[y, x, CHANNEL] = self.putAtLSB(self.card.img[y, x, CHANNEL], int(bit))
                 y = y + (x + 1) // self.card.width
                 x = (x + 1) % self.card.width
 
@@ -169,7 +169,7 @@ class Capsule:
         for letter in range(length):
             bin = ''
             for i in range(8):
-                bin += str(self.getFromLSB(self.card.img[x, y, CHANNEL]))
+                bin += str(self.getFromLSB(self.card.img[y, x, CHANNEL]))
                 y = y + (x + 1) // self.card.width
                 x = (x + 1) % self.card.width
             self.text += self.binToChar(bin)
