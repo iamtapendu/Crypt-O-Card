@@ -189,6 +189,9 @@ class Capsule:
                 bin += str(self.getFromLSB(self.card.img[y, x, self.card.channel]))
                 y = y + (x + 1) // self.card.width
                 x = (x + 1) % self.card.width
+                if (y == self.card.height and self.card.channel != 3):
+                    x = y = 0
+                    self.card.channel += 1
             self.text += self.binToChar(bin)
 
         return True
@@ -230,4 +233,3 @@ if __name__ == '__main__':
     print(cap.getText())
     print(cap.checkValidity())
 
-    cap.card.displayCard()
